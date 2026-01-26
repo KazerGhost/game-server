@@ -48,4 +48,5 @@ app.get('/api-docs', (req: Request, res: Response) => {
     res.send(html);
 });
 
+export default app;
 app.listen(4000, () => { console.log('Server running on port 4000') });
