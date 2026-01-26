@@ -24,7 +24,6 @@ const options = {
 }
 
 const openApiSpecs = swaggerJsDoc(options);
-app.use('/api-docs', swaggerUi.serve);
 
 app.get('/api-docs', (req: Request, res: Response) => {
     const html: string = swaggerUi.generateHTML(openApiSpecs, {
