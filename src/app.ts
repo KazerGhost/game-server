@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -24,6 +24,17 @@ const options = {
 }
 
 const openApiSpecs = swaggerJsDoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiSpecs));
+app.use('/api-docs', swaggerUi.serve);
 
+app.get('/api-docs', (req: Request, res: Response) => {
+    const html: string = swaggerUi.generateHTML(openApiSpecs, {
+        customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+        customJs: [
+         'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+         'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js'
+        ]
+      });
+
+    res.send(html);
+});
 app.listen(4000, () => { console.log('Server running on port 4000') });
