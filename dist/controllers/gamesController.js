@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteGame = exports.updateGame = exports.createGame = exports.getGames = void 0;
+exports.createReview = exports.deleteGame = exports.updateGame = exports.createGame = exports.getGames = void 0;
 const game_1 = __importDefault(require("../models/game"));
 /**
  * @swagger
@@ -15,8 +15,9 @@ const game_1 = __importDefault(require("../models/game"));
  *         description: A list of games
  */
 const getGames = async (req, res) => {
+    const filter = req.query;
     // use model to query mongodb for game docs.  find() gets all docs
-    const games = await game_1.default.find();
+    const games = await game_1.default.find(filter);
     if (!games || games.length === 0) {
         return res.status(404).json({ message: 'No games found' });
     }
@@ -119,3 +120,16 @@ const deleteGame = async (req, res) => {
     return res.status(204).json({ 'msg': 'Game Deleted' }); // 204: No Content
 };
 exports.deleteGame = deleteGame;
+const createReview = async (req, res) => {
+    // get id param from url 
+    const id = req.params.id;
+    const game = await game_1.default.findByIdAndUpdate(id, {
+        $push: {
+            // ... destructures array into invididual properties
+            reviews: { ...req.body, date: new Date() }
+        }
+    });
+    return res.status(204).json(game);
+    ç;
+};
+exports.createReview = createReview;
