@@ -11,6 +11,7 @@ const gamesController_1 = require("../controllers/gamesController");
 const router = express_1.default.Router();
 // map standard REST API url's to the CRUD functions in controller
 router.get('/', gamesController_1.getGames);
+router.get('/:id', gamesController_1.getGame);
 router.post('/', gamesController_1.createGame);
 router.put('/:id', gamesController_1.updateGame);
 router.delete('/:id', gamesController_1.deleteGame);

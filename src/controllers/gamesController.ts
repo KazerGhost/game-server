@@ -22,6 +22,17 @@ export const getGames = async (req: Request, res: Response) => {
     return res.status(200).json(games);
 };
 
+export const getGame = async(req: Request, res: Response) => {
+    // try to fetch selected game by its id from url param
+    const game = await Game.findById(req.params.id);
+
+    // err handle
+    if (!game) { return res.status(404).json({ message: 'Game Not Found' }) }
+
+    // return selected game
+    return res.status(200).json(game);
+};
+
 /**
  * @swagger
  * /api/v1/games:
